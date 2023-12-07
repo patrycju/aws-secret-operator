@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	b64 "encoding/base64"
 	"encoding/json"
 
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -58,6 +59,14 @@ func (c *SyncContext) SecretsManagerSecretToKubernetesStringData(ref v1alpha1.Se
 	m, err := awsSecretValueToMap(*sec)
 	if err != nil {
 		return nil, err
+	}
+    
+	if ref.KeysToDecode != nil {
+		for _, k := range ref.KeysToDecode {
+			if v, ok := m[k]; ok {
+				m[k] = string(b64.StdEncoding.DecodeString(v))
+			}
+		}
 	}
 
 	m["AWSVersionId"] = *ver

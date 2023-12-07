@@ -50,6 +50,8 @@ type SecretsManagerSecretRef struct {
 	SecretId string `json:"secretId,omitempty"`
 	// VersionIdis the VersionId a.k.a `--version-id` of the SecretsManager secret version
 	VersionId string `json:"versionId,omitempty"`
+	// KeysToDecode is the list of keys to base64 decode from the SecretsManager secret version
+	KeysToDecode []string `json:"keysToDecode,omitempty"`
 }
 
 // AWSSecretStatus defines the observed state of AWSSecret
