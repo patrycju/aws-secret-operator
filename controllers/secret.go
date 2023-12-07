@@ -64,7 +64,11 @@ func (c *SyncContext) SecretsManagerSecretToKubernetesStringData(ref v1alpha1.Se
 	if ref.KeysToDecode != nil {
 		for _, k := range ref.KeysToDecode {
 			if v, ok := m[k]; ok {
-				m[k] = string(b64.StdEncoding.DecodeString(v))
+				decoded, err := b64.StdEncoding.DecodeString(v)
+				if err != nil {
+					return nil, err
+				}
+				m[k] = string(decoded)
 			}
 		}
 	}
